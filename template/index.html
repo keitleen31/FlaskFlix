@@ -1,0 +1,144 @@
+app.py
+.-------------------.
+
+from flask import Flask, render_template
+
+# Inicializar la aplicación Flask
+app = Flask(__name__)
+
+# Datos de los videos (simulando una base de datos)
+# Puedes cambiar estos videos por los que prefieras.
+# Solo necesitas el ID del video de YouTube.
+videos = [
+    {
+        'id': 'Vff5vxQfstA',
+        'titulo': 'Entrada Triunfal de RORO',
+        'canal': 'SENIOR AM'
+    },
+    {
+        'id': 'R_h-fdb83gA',
+        'titulo': '¿Qué es una API? La explicación más sencilla',
+        'canal': 'Nate Gentile'
+    },
+    {
+        'id': '8j_m_h2215s',
+        'titulo': 'El video 4K más IMPRESIONANTE del espacio',
+        'canal': 'Melodysheep'
+    },
+    {
+        'id': 'l-ASH2y2Qp4',
+        'titulo': '15 Trucos de Visual Studio Code',
+        'canal': 'MoureDev by Brais Moure'
+    }
+]
+
+# Definir la ruta principal de la aplicación
+@app.route('/')
+def index():
+    # 'render_template' buscará 'index.html' en la carpeta 'templates'
+    # y le pasará la lista de videos para que la pueda usar.
+    return render_template('index.html', videos=videos)
+
+# Esto es necesario para ejecutar la aplicación
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------------------------
+style.css
+-----------------------------
+
+body {
+    background-color: #141414;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #111;
+    padding: 10px 40px;
+    border-bottom: 2px solid #e50914;
+}
+
+header h1 {
+    color: #e50914;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.video-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px;
+}
+
+.video-card {
+    background-color: #222;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 320px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+.video-card:hover {
+    transform: scale(1.05);
+}
+
+.video-card iframe {
+    display: block;
+    border: none;
+}
+
+.video-card h3 {
+    font-size: 1.1em;
+    margin: 15px;
+}
+
+.video-card p {
+    font-size: 0.9em;
+    color: #aaa;
+    margin: 0 15px 15px;
+}
+
+------------------------------------------
+index.html
+----------------------------------------
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlaskFlix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>FlaskFlix</h1>
+    </header>
+
+    <main class="video-gallery">
+        {% for video in videos %}
+        <div class="video-card">
+            <iframe
+                width="100%"
+                height="200"
+                src="https://www.youtube.com/embed/{{ video.id }}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+            <h3>{{ video.titulo }}</h3>
+            <p>{{ video.canal }}</p>
+        </div>
+        {% endfor %}
+        </main>
+
+</body>
+</html>
+
